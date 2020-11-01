@@ -1,12 +1,11 @@
 const cards = document.querySelectorAll('.memory-card');
 
 let hasFlippedCard = false;
-let lockBoard = false; //card isn't clicked
+let lockedIn = false; //card isn't clicked
 let firstCard, secondCard;
 
-// this function flips the card when clicked
-function flipCard() {
-  if (lockBoard) return; //once clicked lockBoard is now true and will prevent any card flipping before the cards are hidden or matched.
+function flipCard() { // this function flips the card when clicked
+  if (lockedIn) return; //once clicked lockedIn is now true and will prevent any card flipping before the cards are hidden or matched.
   if (this === firstCard) return; // checks if clicked card is equal to the firstCard and return if positive.
   this.classList.add('flip');
   if (!hasFlippedCard){
@@ -17,22 +16,22 @@ function flipCard() {
     secondCard = this; //flips the second card
     checkForMatch();
 }
-function checkForMatch() { //checks if cards match
-   if (firstCard.dataset.framework === secondCard.dataset.framework) {
+const checkForMatch = () => { //checks if cards match
+   if (firstCard.dataset.framework ===  secondCard.dataset.framework) { //if first cards data.framework matches second cards data.framework then disable cards from being clicked
      disableCards();
      return;
    }
 
    unflipCards(); //flips cards back if the dont match
 }
- function disableCards() { //prevents further flipping
+const disableCards = () => { //prevents further flipping
    firstCard.removeEventListener('click', flipCard);
    secondCard.removeEventListener('click', flipCard);
    resetBoard();
 }
 
- function unflipCards() { //flips cards back
-   lockBoard = true;
+const unflipCards = () => { //flips cards back
+   lockedIn = true;
    setTimeout(() => {
      firstCard.classList.remove('flip');
      secondCard.classList.remove('flip');
@@ -40,15 +39,15 @@ function checkForMatch() { //checks if cards match
    }, 1500);
 }
 
-function resetBoard() { //using destructuring assignment syntax
-  [hasFlippedCard, lockBoard] = [false, false];
+const resetBoard = () => { //using destructuring assignment syntax
+  [hasFlippedCard, lockedIn] = [false, false];
   [firstCard, secondCard] = [null, null];
 }
 
 (function shuffle() { //randomly places cards
   cards.forEach(card => {
-    let ramdomPos = Math.floor(Math.random() * 12);
-   card.style.order = ramdomPos;
+    let randomCard = Math.floor(Math.random() * 12);
+   card.style.order = randomCard;
   });
 })();
 
