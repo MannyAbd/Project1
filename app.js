@@ -3,6 +3,7 @@ const cards = document.querySelectorAll('.memory-card');
 let hasFlippedCard = false;
 let lockedIn = false; //card isn't clicked
 let firstCard, secondCard;
+let score = 0;
 
 function flipCard() { // this function flips the card when clicked
   if (lockedIn) return; //once clicked lockedIn is now true and will prevent any card flipping before the cards are hidden or matched.
@@ -14,16 +15,25 @@ function flipCard() { // this function flips the card when clicked
     return;  //This is for clicking the first card
   }
     secondCard = this; //flips the second card
-    checkForMatch();
+    checkForMatch()
 }
+
+
 const checkForMatch = () => { //checks if cards match
    if (firstCard.dataset.framework ===  secondCard.dataset.framework) { //if first cards data.framework matches second cards data.framework then disable cards from being clicked
+     score += 2
+     if (score >= 11){
+       setTimeout(() => {
+       alert('winner!')
+     },500)
+   }
+     console.log(score)
      disableCards();
      return;
    }
-
-   unflipCards(); //flips cards back if the dont match
+   unflipCards(); //flips cards back if they dont match
 }
+
 const disableCards = () => { //prevents further flipping
    firstCard.removeEventListener('click', flipCard);
    secondCard.removeEventListener('click', flipCard);
@@ -36,12 +46,13 @@ const unflipCards = () => { //flips cards back
      firstCard.classList.remove('flip');
      secondCard.classList.remove('flip');
      resetBoard();
-   }, 1500);
+   }, 900);
 }
 
 const resetBoard = () => { //using destructuring assignment syntax
   [hasFlippedCard, lockedIn] = [false, false];
   [firstCard, secondCard] = [null, null];
+
 }
 
 (function shuffle() { //randomly places cards
