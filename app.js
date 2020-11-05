@@ -33,7 +33,7 @@ const checkForMatch = () => { //checks if cards match
      score += 2
      if (score >= 11){
        setTimeout(() => {
-       alert('winner!')
+       alert('winner! want to play again? click restart game!')
      },500)
    }
      console.log(score)
